@@ -6,6 +6,8 @@ public class ParsedData<data>
 {
     private data value;
 
+    public bool isNull { get { return value == null; } }
+
     public ParsedData(data data)
     {
         value = data;
@@ -16,7 +18,8 @@ public class ParsedData<data>
         if(value == null)
         {
             Debug.Log("tracking data is gone : null");
-            throw new System.NullReferenceException();
+            return default(data);
+            //throw new System.NullReferenceException();
         }
         return value;
     }

@@ -12,8 +12,10 @@ public class GUIHandler : MonoBehaviour
 
     List<KeyValuePair<object, GameObject>> cachedUIs = new List<KeyValuePair<object, GameObject>>();
 
+    public Dictionary<GameObject,GUIWindow> windowsOpened = new Dictionary<GameObject,GUIWindow>();
+
     [SerializeField]
-    GUIBank guis = new GUIBank();
+    public GUIBank guis = new GUIBank();
 
     public GameObject AddUI(GameObject g,object source)
     {
@@ -36,6 +38,30 @@ public class GUIHandler : MonoBehaviour
         return g;
     }
 
+    public GameObject DrawWindowLayout(GameObject window,Vector2 pos)
+    {
+        try
+        {
+            windowsOpened.Add(window, new GUIWindow());
+        }
+        catch (System.Exception e)
+        {
+            // NO duplicated window allowed
+            return null;
+        }
+
+        var g = Instantiate(window, canvas.transform);
+        var w = g.GetComponent<GUIWindow>();
+
+        Node.canDrawInfo = false;
+
+        // this is the template for further refrences not gui gameobject in the scene (this is our prefab simply)
+        w.guiWindow = window;
+        w.SetPosition(pos);
+        w.Open();
+        return g;
+    }
+
     public void Clean(object source)
     {
         foreach (var g in cachedUIs)
@@ -47,6 +73,14 @@ public class GUIHandler : MonoBehaviour
             }
         }
     }
+    public void Clean()
+    {
+        foreach (var g in cachedUIs)
+        {
+            Destroy(g.Value);
+        }
+        cachedUIs.Clear();
+    }
     [System.Serializable]
     public class GUIBank
     {
@@ -57,7 +91,4 @@ public class GUIHandler : MonoBehaviour
         // Specialized guis
         public GameObject guiDropMenu;
     }
-
-    
-
 }

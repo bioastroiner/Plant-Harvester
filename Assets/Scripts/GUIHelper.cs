@@ -15,11 +15,9 @@ public class GUIHelper
         return p;
     }
 
-    static ParsedData<GameObject> window;
-
-    public static void OpenWindow(Vector2 pos, object source)
+    public static GameObject OpenDropDownWindow(Vector2 pos,UnityEngine.Object source)
     {
-        gui.DrawPanel(pos,source);
+        return gui.DrawWindowLayout(GUIHandler.Instance.guis.guiDropMenu, pos);
     }
     public static void CloseWindow()
     {

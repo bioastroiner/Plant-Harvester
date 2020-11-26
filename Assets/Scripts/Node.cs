@@ -13,17 +13,26 @@ public class Node : MonoBehaviour
     }
 
     ParsedData<GameObject> goData;
+    ParsedData<GameObject> winData;
+
+    public static bool canDrawInfo = true;
 
     public void HighLight(bool b = true)
     {
+        if(canDrawInfo)
         GetComponent<MeshRenderer>().enabled = b;
+        else
+        GetComponent<MeshRenderer>().enabled = false;
     }
 
     private void OnMouseEnter()
     {
         HighLight();
-        var g = GUIHelper.DrawInfo(Input.mousePosition, $"{name}", this);
-        goData = new ParsedData<GameObject>(g);
+        if (canDrawInfo)
+        {
+            var g = GUIHelper.DrawInfo(Input.mousePosition, $"{name}", this);
+            goData = new ParsedData<GameObject>(g);
+        }
     }
 
     private void OnMouseExit()
@@ -34,13 +43,20 @@ public class Node : MonoBehaviour
 
     private void OnMouseOver()
     {
-        goData.Value().transform.position = Input.mousePosition;
+        if (canDrawInfo)
+        {
+            if (goData != null)
+                if (!goData.isNull)
+                    goData.Value().transform.position = Input.mousePosition;
+        }
+        
     }
 
     private void OnMouseDown()
     {
         transform.localScale = Vector3.one * 0.99f;
-
+        var w = GUIHelper.OpenDropDownWindow(Input.mousePosition,GetComponent<Node>());
+        winData = new ParsedData<GameObject>(w);
     }
 
     private void OnMouseUp()
