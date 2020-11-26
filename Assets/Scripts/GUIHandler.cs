@@ -8,12 +8,12 @@ public class GUIHandler : MonoBehaviour
     [HideInInspector]
     public static GUIHandler Instance { get { return GameObject.Find("Prisistant GameObject").GetComponent<GUIHandler>(); } }
 
-    public GameObject UI_component;
-    public GameObject UI_txt;
-
     public Canvas canvas;
 
     List<KeyValuePair<object, GameObject>> cachedUIs = new List<KeyValuePair<object, GameObject>>();
+
+    [SerializeField]
+    GUIBank guis = new GUIBank();
 
     public GameObject AddUI(GameObject g,object source)
     {
@@ -23,14 +23,14 @@ public class GUIHandler : MonoBehaviour
     }
     public GameObject DrawPanel(Vector2 pos, object source)
     {
-        GameObject g = AddUI(UI_component,source);
+        GameObject g = AddUI(guis.guiGenericPanel,source);
         g.transform.position = pos;
         return g;
     }
 
     public GameObject DrawText(Vector2 pos,string txt, object source)
     {
-        GameObject g = AddUI(UI_txt,source);
+        GameObject g = AddUI(guis.guiGenericText,source);
         g.transform.position = pos;
         g.GetComponent<Text>().text = txt;
         return g;
@@ -47,5 +47,17 @@ public class GUIHandler : MonoBehaviour
             }
         }
     }
+    [System.Serializable]
+    public class GUIBank
+    {
+        // Generic guis
+        public GameObject guiGenericPanel;
+        public GameObject guiGenericText;
+
+        // Specialized guis
+        public GameObject guiDropMenu;
+    }
+
+    
 
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ParsedData<data>
 {
@@ -14,7 +15,7 @@ public class ParsedData<data>
     {
         if(value == null)
         {
-            Debug.Log("source is gone : null");
+            Debug.Log("tracking data is gone : null");
             throw new System.NullReferenceException();
         }
         return value;
